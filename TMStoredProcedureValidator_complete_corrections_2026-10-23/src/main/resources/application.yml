@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: tm-stored-procedure-validator
+  datasource:
+    url: ${TM_DB_URL:jdbc:postgresql://localhost:5432/tm}
+    username: ${TM_DB_USERNAME:postgres}
+    password: ${TM_DB_PASSWORD:root}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: routine-validator
+      maximum-pool-size: 8
+      minimum-idle: 1
+      connection-timeout: 10000
+      validation-timeout: 3000
+      auto-commit: true
+  main:
+    web-application-type: none
+
+validator:
+  startup-enabled: true
+  database: tm
+  schema: public1
+  report-directory: reports
+  max-routines: 700
+  max-tests-per-routine: 8
+  max-tests-per-run: 5000
+  max-generated-rows-per-run: 200
+  max-snapshot-tables: 100
+  max-snapshot-rows-per-table: 5000
+  max-output-rows: 100
+  max-generated-string-length: 64
+  query-timeout-seconds: 30
+  run-timeout-seconds: 600
+  internal-transaction-mode: AUTOCOMMIT_BOUNDED
+  # TEST DATABASE ONLY: permits re-running previously invoked write routines.
+  # Never enable against production or a database whose data must be preserved.
+  allow-write-replay: true
+  compatibility-views-enabled: true
+
+logging:
+  level:
+    root: INFO
+    com.tm.storedprocedure: INFO
